@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Employee Directory</h2>
+<p>Manage all company accounts from the MySQL database.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.department }}</td>
+            <td>
+                {% if user.status == 'Active' %}
+                    <span style="color: green; font-weight: bold;">● Active</span>
+                {% else %}
+                    <span style="color: red; font-weight: bold;">● Disabled</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('reset_password', user_id=user.id) }}" class="btn btn-warning">Reset Password</a>
+                {% if user.status == 'Active' %}
+                    <a href="{{ url_for('disable_user', user_id=user.id) }}" class="btn btn-danger">Disable Account</a>
+                {% else %}
+                    <a href="{{ url_for('enable_user', user_id=user.id) }}" class="btn btn-success">Enable Account</a>
+                {% endif %}
+                <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-dark"
+                   onclick="return confirm('Delete {{ user.first_name }} {{ user.last_name }}?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
