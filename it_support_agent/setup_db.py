@@ -1,7 +1,3 @@
-"""
-setup_db.py — Creates the MySQL database, users table, and seeds dummy data.
-Run once before starting the Flask app: python setup_db.py
-"""
 
 import os
 import pymysql
@@ -29,7 +25,7 @@ DUMMY_USERS = [
 ]
 
 def setup():
-    # Connect without specifying DB to allow CREATE DATABASE
+    
     conn = pymysql.connect(
         host=MYSQL_HOST,
         port=MYSQL_PORT,
@@ -57,7 +53,7 @@ def setup():
                 );
             """)
 
-            # Only seed if table is empty
+    
             cur.execute("SELECT COUNT(*) as cnt FROM users;")
             row = cur.fetchone()
             if row["cnt"] == 0:
